@@ -1,0 +1,1 @@
+Sephora, sample for api/graphql testing
