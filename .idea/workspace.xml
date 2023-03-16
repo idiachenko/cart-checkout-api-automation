@@ -4,15 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="224815fa-df0f-4d8a-8bcc-e0486c22c151" name="Changes" comment="deleted">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/rest/controller/GetShoppingListController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/sephora/rest/SampleRestTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+    <list default="true" id="224815fa-df0f-4d8a-8bcc-e0486c22c151" name="Changes" comment="Added working test for graphql service with todo marks, updated dependecies">
+      <change afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/BaseRestAssuredClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/graphql/controller/BaseGraphQlController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/graphql/controller/getshoppinglist/GetShoppingListController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/graphql/dto/getshoppinglist/GetShoppingListDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/graphql/dto/getshoppinglist/Input.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/graphql/dto/getshoppinglist/Pagination.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/graphql/dto/getshoppinglist/Variables.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/graphql/enums/ShoppingListSortType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/resources/graphql/query/getShoppingList.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/dependencies.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/dependencies.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/rest/controller/BaseRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/rest/controller/BaseRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/rest/controller/GetShoppingListController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/rest/controller/GetShoppingListController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/assertions/ResponseAssertion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/assertions/ResponseAssertion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/assertions/ResponseExpectMessages.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/sephora/cartcheckout/assertions/ResponseExpectMessages.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/sephora/graphql/SampleGraphQLTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/sephora/graphql/SampleGraphQLTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/sephora/rest/SampleRestTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/sephora/rest/SampleRestTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,6 +90,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
+    "last_directory_selection": "/Users/idiachenko/Documents/sephora/cart-checkout-api-automation/src/main/java/sephora/cartcheckout/rest",
     "last_opened_file_path": "/Users/idiachenko/Documents/sephora/cart-checkout-api-automation/src/main/java/sephora/cartcheckout"
   }
 }]]></component>
@@ -90,8 +100,12 @@
       <recent name="$PROJECT_DIR$/src/main/resources" />
       <recent name="$PROJECT_DIR$/gradle" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="sephora.cartcheckout.graphql.enums" />
+      <recent name="graphql.dto" />
+    </key>
   </component>
-  <component name="RunManager" selected="Gradle.cart-checkout-api-automation [build]">
+  <component name="RunManager" selected="Gradle.SampleGraphQLTest">
     <configuration default="true" type="AZURE_FUNCTION_SUPPORT" factoryName="Run Functions">
       <option name="appName" />
       <option name="appServicePlanName" />
@@ -123,23 +137,48 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="cart-checkout-api-automation [assemble]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="SampleGraphQLTest" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
+        <option name="scriptParameters" value="" />
         <option name="taskDescriptions">
           <list />
         </option>
         <option name="taskNames">
           <list>
-            <option value="assemble" />
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;sephora.graphql.SampleGraphQLTest&quot;" />
           </list>
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration name="SampleGraphQLTest.verifyGetShoppingList" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests" />
+            <option value="&quot;sephora.graphql.SampleGraphQLTest.verifyGetShoppingList&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
       <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
@@ -186,11 +225,45 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
+    <configuration name="sephora.graphql.SampleGraphQLTest and 1 more" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" value="" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value=":test" />
+            <option value="--tests &quot;sephora.graphql.SampleGraphQLTest&quot;" />
+            <option value="--tests &quot;sephora.rest.SampleRestTest&quot;" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <option name="AUTO_RESTART" value="false" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Gradle.SampleGraphQLTest" />
         <item itemvalue="Gradle.cart-checkout-api-automation [build]" />
+        <item itemvalue="Gradle.sephora.graphql.SampleGraphQLTest and 1 more" />
         <item itemvalue="Gradle.cart-checkout-api-automation [clean]" />
-        <item itemvalue="Gradle.cart-checkout-api-automation [assemble]" />
+        <item itemvalue="Gradle.SampleGraphQLTest.verifyGetShoppingList" />
       </list>
     </recent_temporary>
   </component>
@@ -225,9 +298,16 @@
       <updated>1677860232256</updated>
       <workItem from="1677860233785" duration="47000" />
       <workItem from="1677860314402" duration="76000" />
-      <workItem from="1677860399871" duration="2629000" />
+      <workItem from="1677860399871" duration="27089000" />
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added first test in framework">
+      <created>1677863044592</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1677863044592</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -247,6 +327,29 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="123" />
     <MESSAGE value="deleted" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleted" />
+    <MESSAGE value="Added first test in framework" />
+    <MESSAGE value="Added working test for graphql service with todo marks, updated dependecies" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added working test for graphql service with todo marks, updated dependecies" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/sephora/graphql/SampleGraphQLTest.java</url>
+          <line>18</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/sephora/graphql/SampleGraphQLTest.java</url>
+          <line>40</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/sephora/cartcheckout/graphql/controller/BaseGraphQlController.java</url>
+          <line>8</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

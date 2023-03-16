@@ -1,4 +1,4 @@
-package rest.controller;
+package sephora.cartcheckout.rest.controller;
 
 import io.qameta.allure.Step;
 import io.restassured.specification.RequestSpecification;

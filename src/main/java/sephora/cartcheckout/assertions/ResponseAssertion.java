@@ -3,8 +3,6 @@ package sephora.cartcheckout.assertions;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 
-import java.sql.SQLException;
-
 
 public class ResponseAssertion {
 
@@ -25,19 +23,6 @@ public class ResponseAssertion {
         return this;
     }
 
-
-    public ResponseAssertion isSampleValueIsEqualTo(String customValue) {
-        String response = targetResponse.jsonPath().get("path.in.json.response.to.needed.parameter");
-
-        var dspIdAssertionMessage = new ResponseExpectMessages(targetResponse)
-                .expectedCustomValue(customValue);
-
-        Assertions.assertThat(response)
-                .withFailMessage(dspIdAssertionMessage)
-                .isEqualTo(customValue);
-        return this;
-    }
-
     public void responseIsEmpty() {
         Assertions.assertThat(targetResponse.asString()).isEmpty();
     }
@@ -51,4 +36,15 @@ public class ResponseAssertion {
     }
 
 
+    public void keyValueEqualsTo(String expected) {
+        String actual = targetResponse.jsonPath().get("data.shoppingList.key");
+        String suffixThatAddedToKeyInResponse = "-shopping-list";
+
+        var dspIdAssertionMessage = new ResponseExpectMessages(targetResponse)
+                .expectedShoppingListKey(expected);
+
+        Assertions.assertThat(actual)
+                .withFailMessage(dspIdAssertionMessage)
+                .isEqualTo(expected + suffixThatAddedToKeyInResponse);
+    }
 }

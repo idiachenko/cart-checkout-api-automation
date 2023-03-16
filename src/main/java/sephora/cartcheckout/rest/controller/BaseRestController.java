@@ -1,4 +1,4 @@
-package rest.controller;
+package sephora.cartcheckout.rest.controller;
 
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.specification.RequestSpecification;
@@ -8,6 +8,8 @@ import static io.restassured.RestAssured.given;
 public class BaseRestController {
 
     public RequestSpecification restClient(String basePath, Object userInformation) {
+
+        RequestSpecification obj;
 
         return given()
                 .baseUri("our uri from properties")

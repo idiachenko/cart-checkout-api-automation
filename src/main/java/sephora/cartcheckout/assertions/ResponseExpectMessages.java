@@ -23,9 +23,9 @@ public class ResponseExpectMessages {
                 .bld();
     }
 
-    public String expectedCustomValue(String id) {
+    public String expectedShoppingListKey(String expected) {
         return StringBuilderCustom.sbb().n()
-                .append("Actual deal ID:").w().append(id).n()
+                .append("Expected shoppingList key:").w().append(expected).n()
                 .append("Actual response body:").n()
                 .append(targetResponse.body().asString()).n()
                 .bld();
