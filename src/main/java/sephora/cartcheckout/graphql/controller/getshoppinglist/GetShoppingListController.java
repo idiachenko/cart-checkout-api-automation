@@ -14,7 +14,9 @@ public class GetShoppingListController extends BaseGraphQlController {
 
     @Step("Run get shopping list query")
     public ResponseAssertion getShoppingList(GetShoppingListDTO getShoppingListDTO) {
-        var unpublishedDealResponse = getShoppingListClient().body(getShoppingListDTO).post();
+        var unpublishedDealResponse = getShoppingListClient()
+                .body(getShoppingListDTO)
+                .post();
         return new ResponseAssertion(unpublishedDealResponse);
     }
 }
