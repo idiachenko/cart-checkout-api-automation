@@ -10,7 +10,6 @@ public class BaseGraphQlController extends BaseRestAssuredClient {
         return client(
                 ApplicationConfig.config.getGraphqlUri(),
                 "/shopping-list/graphql?")
-                .header("Authorization", "Bearer x7ZSVCOiBUBgxDZ2_SJ33ZEbY-T2CYM8")
                 .header("Customer-Id", customerId);
     }
 

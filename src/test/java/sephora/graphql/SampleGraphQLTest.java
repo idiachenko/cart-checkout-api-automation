@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 import static sephora.cartcheckout.graphql.enums.ShoppingListSortType.*;
 
 
-public class SampleGraphQLTest extends BaseGraphQlTest{
+public class SampleGraphQLTest extends BaseGraphQlTest {
 
     // todo decide with "shopping list key" - add manually and use in test or generate new products and put them
     //      dynamically in tests, then we need to remove them
@@ -27,8 +27,11 @@ public class SampleGraphQLTest extends BaseGraphQlTest{
 
     @ParameterizedTest
     @MethodSource("getShoppingListPositiveCase1")
-    public void healthCheckOfGetShoppingListParameters(String expectedKey
-            , ShoppingListSortType sortType, String storeId, int currentPage, int itemsPerPage) throws IOException {
+    public void healthCheckOfGetShoppingListParameters(String expectedKey,
+                                                       ShoppingListSortType sortType,
+                                                       String storeId,
+                                                       int currentPage,
+                                                       int itemsPerPage) throws IOException {
 
         GetShoppingListDTO shoppingListDTO = getShoppingListDTO(
                 getShoppingListVariablesDTO(expectedKey,
@@ -43,11 +46,25 @@ public class SampleGraphQLTest extends BaseGraphQlTest{
 
     }
 
+    /**
+     * Verify get shopping list with invalid token, shopping list from the commerce tool profile is returned
+     * Verify get shopping list without token (e.g. anonymous request), shopping list from the commerce tool profile is returned
+     * Verify get shopping list for SKU that are out of stock, such SKU is not returned
+     * Verify get shopping list pagination
+     * Verify get shopping list sorting options: default
+     * Verify get shopping list sorting options: recently
+     * Verify get shopping list sorting options: brandname_asc
+     * Verify get shopping list sorting options: brandname_dsc
+     * Verify get shopping list sorting options: price_low_to_high
+     * Verify get shopping list sorting options: price_high_to_low
+     * Verify get shopping list sorting options: store_availability
+     */
+
     private static Stream<Arguments> getShoppingListPositiveCase1() {
 
         return Stream.of(
                 Arguments.of("100201", DEFAULT, "", 1, 10),
-                Arguments.of("100204", STOREAVAILABILITY, "not null", 1, 0),
+                Arguments.of("100204", STOREAVAILABILITY, "not null", 1, -1),
                 Arguments.of("100204", BRANDNAME_ASC, "123", 1, 1),
                 Arguments.of("100204", BRANDNAME_DESC, "123", 2, 2),
                 Arguments.of("100204", PRICE_HIGH_TO_LOW, "123", -1, 100),
@@ -55,5 +72,6 @@ public class SampleGraphQLTest extends BaseGraphQlTest{
                 Arguments.of("100204", STOREAVAILABILITY, "123", 1, 100)
         );
     }
+
 
 }

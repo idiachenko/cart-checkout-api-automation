@@ -10,20 +10,15 @@ import java.util.Arrays;
 public enum ShoppingListSortType {
     DEFAULT("DEFAULT"),
 
-    RECENTLY(
-            "RECENTLY"),
+    RECENTLY("RECENTLY"),
 
-    BRANDNAME_ASC(
-            "BRANDNAME_ASC"),
+    BRANDNAME_ASC("BRANDNAME_ASC"),
 
-    BRANDNAME_DESC(
-            "BRANDNAME_DESC"),
+    BRANDNAME_DESC("BRANDNAME_DESC"),
 
-    PRICE_LOW_TO_HIGH(
-            "PRICE_LOW_TO_HIGH"),
+    PRICE_LOW_TO_HIGH("PRICE_LOW_TO_HIGH"),
 
-    PRICE_HIGH_TO_LOW(
-            "PRICE_HIGH_TO_LOW"),
+    PRICE_HIGH_TO_LOW("PRICE_HIGH_TO_LOW"),
 
     STOREAVAILABILITY("STOREAVAILABILITY");
 

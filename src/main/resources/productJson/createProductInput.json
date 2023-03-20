@@ -1,0 +1,40 @@
+{
+  "productType" : {
+    "id" : "72f86c53-3c38-46a8-86a7-d1a4740c771d",
+    "typeId" : "product-type"
+  },
+  "categories" : [],
+  "name" : {
+    "en" : "API test product"
+  },
+  "slug" : {
+    "en" : "P001013"
+  },
+  "masterVariant" : {
+    "sku" : "P001013-199118",
+    "prices" : [ {
+      "value" : {
+        "currencyCode" : "USD",
+        "centAmount" : 10550
+      }
+    } ],
+    "images" : [ {
+      "url" : "http://my.custom.cdn.net/master.png",
+      "label" : "Master Image",
+      "dimensions" : {
+        "w" : 303,
+        "h" : 197
+      }
+    } ]
+  },
+  "variants" : [ {
+    "images" : [ {
+      "url" : "http://my.custom.cdn.net/variant.png",
+      "label" : "Variant Image",
+      "dimensions" : {
+        "w" : 303,
+        "h" : 197
+      }
+    } ]
+  } ]
+}
