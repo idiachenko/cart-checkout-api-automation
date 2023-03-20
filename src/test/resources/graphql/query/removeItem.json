@@ -1,0 +1,4 @@
+{
+  "query":"mutation removeItemTest($removeItemInput: RemoveItemInput!) {\n  removeItem(removeItemInput: $removeItemInput) {\n    id\n    key\n    version\n    audit {\n      createdAt\n      createdBy\n    }\n    lineItems {\n      id\n      addedAt\n      product {\n        id\n        name\n        brand {\n          id\n          name\n        }\n        type\n        category\n        sku {\n          id\n          price {\n            currency\n            amount\n          }\n          salePrice {\n            currency\n            amount\n          }\n          size\n          images {\n            image62\n            image97\n            image135\n            image162\n            image250\n            image450\n          }\n          variant {\n            type\n            name\n            value\n          }\n        }\n      }\n    }\n  }\n}",
+  "operationName":"removeItemTest"
+}

@@ -6,6 +6,8 @@ import sephora.cartcheckout.config.ApplicationConfig;
 
 public class BaseGraphQlController extends BaseRestAssuredClient {
 
+    protected static final String CUSTOMER_ID = "automation";
+
     public RequestSpecification graphQlClient(String customerId) {
         return client(
                 ApplicationConfig.config.getGraphqlUri(),
