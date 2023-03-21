@@ -3,6 +3,8 @@ package sephora.cartcheckout.assertions;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 
+import java.util.List;
+
 
 public class ResponseAssertion {
 
@@ -40,11 +42,22 @@ public class ResponseAssertion {
         String actual = targetResponse.jsonPath().get("data.shoppingList.key");
         String suffixThatAddedToKeyInResponse = "-shopping-list";
 
-        var dspIdAssertionMessage = new ResponseExpectMessages(targetResponse)
+        var expectedShoppingListKey = new ResponseExpectMessages(targetResponse)
                 .expectedShoppingListKey(expected);
 
         Assertions.assertThat(actual)
-                .withFailMessage(dspIdAssertionMessage)
+                .withFailMessage(expectedShoppingListKey)
                 .isEqualTo(expected + suffixThatAddedToKeyInResponse);
+    }
+
+    public void errorMessageContains(String errorMessage) {
+        List<String> errors = targetResponse.jsonPath().get("errors.message");
+
+        var expectedErrorMessage = new ResponseExpectMessages(targetResponse)
+                .expectedErrorMessage(errorMessage);
+
+        Assertions.assertThat(errors)
+                .withFailMessage(expectedErrorMessage)
+                .contains(errorMessage);
     }
 }

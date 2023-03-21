@@ -31,6 +31,14 @@ public class ResponseExpectMessages {
                 .bld();
     }
 
+    public String expectedErrorMessage(String expected) {
+        return StringBuilderCustom.sbb().n()
+                .append("Expected errorMessage:").w().append(expected).n()
+                .append("Actual errorMessage:").n()
+                .append(targetResponse.body().asString()).n()
+                .bld();
+    }
+
 
     @AllArgsConstructor
     public enum StatusCode {

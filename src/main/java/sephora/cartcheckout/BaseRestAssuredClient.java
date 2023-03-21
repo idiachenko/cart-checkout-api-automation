@@ -10,7 +10,7 @@ import static io.restassured.RestAssured.given;
 
 public class BaseRestAssuredClient {
 
-    public RequestSpecification client(String uri, String basePath) {
+    protected RequestSpecification client(String uri, String basePath) {
 
         RestAssured.useRelaxedHTTPSValidation();
         return given()

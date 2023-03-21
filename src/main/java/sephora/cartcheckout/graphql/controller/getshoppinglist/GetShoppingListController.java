@@ -19,4 +19,8 @@ public class GetShoppingListController extends BaseGraphQlController {
                 .post();
         return new ResponseAssertion(unpublishedDealResponse);
     }
+
+    public void setHeader(String key, String value){
+        getShoppingListClient().header(key, value);
+    }
 }

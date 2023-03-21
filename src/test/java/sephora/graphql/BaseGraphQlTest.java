@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class BaseGraphQlTest {
 
-    public Variables getShoppingListVariablesDTO(String key, ShoppingListSortType sortBy, String storeId, int currentPage, int itemsPerPage){
+    public Variables getShoppingListVariablesDTO(String key, ShoppingListSortType sortBy, String storeId, Integer currentPage, Integer itemsPerPage){
         return Variables.builder()
                 .input(Input.builder()
                         .key(key)
@@ -24,7 +24,7 @@ public class BaseGraphQlTest {
     }
 
     public GetShoppingListDTO getShoppingListDTO (Variables variables) throws IOException {
-//todo: get rid of this  link to json (wrap in enum or so)
+        //todo: get rid of this  link to json (wrap in enum or so)
         String path = "src/test/resources/graphql/query/getShoppingList.json";
         GetShoppingListDTO getShoppingListDTO = JsonUtils.getJsonAsObject(new GetShoppingListDTO(), path);
         getShoppingListDTO.setVariables(variables);
