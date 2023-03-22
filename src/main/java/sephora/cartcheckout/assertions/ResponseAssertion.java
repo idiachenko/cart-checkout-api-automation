@@ -1,13 +1,19 @@
 package sephora.cartcheckout.assertions;
 
+import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import org.assertj.core.api.Assertions;
 import sephora.cartcheckout.graphql.dto.getshoppinglist.response.GetShoppingListResponse;
 import sephora.cartcheckout.graphql.dto.getshoppinglist.response.LineItemsItem;
+import sephora.cartcheckout.graphql.dto.removeitem.response.Product;
+import sephora.cartcheckout.graphql.dto.removeitem.response.RemoveItemMutationResponse;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 
 public class ResponseAssertion {
@@ -66,8 +72,10 @@ public class ResponseAssertion {
     }
 
     public ResponseAssertion validateErrorMessage(String expected) {
-        String actualMessage = targetResponse.jsonPath().get("errors[0].message");
-        Assertions.assertThat(actualMessage).isEqualTo(expected);
+        Allure.step("Validates the error message is appeared", () -> {
+            String actualMessage = targetResponse.jsonPath().get("errors[0].message");
+            Assertions.assertThat(actualMessage).isEqualTo(expected);
+        });
         return this;
     }
 
@@ -89,5 +97,23 @@ public class ResponseAssertion {
         org.junit.jupiter.api.Assertions.assertEquals(expectedTheNewestItem, actualTheNewestItem);
         org.junit.jupiter.api.Assertions.assertEquals(expectedTheOldestItem, actualTheOldestItem);
 
+    }
+
+    public ResponseAssertion verifySkuRemovedFromShoppingList(String skuId) {
+        Allure.step(String.format("Validate the sku: '%s' has been removed", skuId), () -> {
+            var skuList = this.targetResponse
+                    .then()
+                    .extract()
+                    .as(RemoveItemMutationResponse.class)
+                    .getData()
+                    .getRemoveItem()
+                    .getLineItems()
+                    .stream()
+                    .map(sephora.cartcheckout.graphql.dto.removeitem.response.LineItemsItem::getProduct)
+                    .map(Product::getSku)
+                    .collect(toList());
+            assertFalse(skuList.stream().anyMatch(sku -> sku.getId().equals(skuId)));
+        });
+        return this;
     }
 }

@@ -1,5 +1,6 @@
 package sephora.cartcheckout.graphql.controller;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.specification.RequestSpecification;
 import sephora.cartcheckout.assertions.ResponseAssertion;
@@ -14,20 +15,25 @@ public class GraphQLShoppingListController extends BaseGraphQlController {
 
     @Step("Send remove item from the shopping list query")
     public ResponseAssertion removeItemFromShoppingList(RemoveItemMutationRequest request) {
-        var unpublishedDealResponse = shoppingListClient()
-                .body(request)
-                .when()
-                .post();
-        return new ResponseAssertion(unpublishedDealResponse);
+        final String skuId = request.getVariables().removeItemInput.skuId;
+        return Allure.step(String.format("Removes sku: '%s' from the shopping list", skuId), () -> {
+            var unpublishedDealResponse = shoppingListClient()
+                    .body(request)
+                    .when()
+                    .post();
+            return new ResponseAssertion(unpublishedDealResponse);
+        });
     }
 
     @Step("Send remove item from the shopping list query")
     public ResponseAssertion addItemToShoppingList(AddItemMutationRequest request) {
-        var unpublishedDealResponse = shoppingListClient()
-                .body(request)
-                .log().all()
-                .when()
-                .post();
-        return new ResponseAssertion(unpublishedDealResponse);
+        return Allure.step("Add sku to shopping list", () -> {
+            var unpublishedDealResponse = shoppingListClient()
+                    .body(request)
+                    .log().all()
+                    .when()
+                    .post();
+            return new ResponseAssertion(unpublishedDealResponse);
+        });
     }
 }
