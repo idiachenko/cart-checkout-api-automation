@@ -1,5 +1,6 @@
 package sephora.cartcheckout.graphql.controller.getshoppinglist;
 
+import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.specification.RequestSpecification;
 import sephora.cartcheckout.assertions.ResponseAssertion;
@@ -14,13 +15,16 @@ public class GetShoppingListController extends BaseGraphQlController {
 
     @Step("Run get shopping list query")
     public ResponseAssertion getShoppingList(GetShoppingListDTO getShoppingListDTO) {
-        var unpublishedDealResponse = getShoppingListClient()
-                .body(getShoppingListDTO)
-                .post();
-        return new ResponseAssertion(unpublishedDealResponse);
+        return Allure.step("Send Get shopping list query", () -> {
+            var unpublishedDealResponse = getShoppingListClient()
+                    .body(getShoppingListDTO)
+                    .post();
+            return new ResponseAssertion(unpublishedDealResponse);
+        });
+
     }
 
-    public void setHeader(String key, String value){
+    public void setHeader(String key, String value) {
         getShoppingListClient().header(key, value);
     }
 }

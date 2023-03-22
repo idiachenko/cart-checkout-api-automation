@@ -1,10 +1,6 @@
 package sephora.graphql;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Severity;
-import io.qameta.allure.Story;
-import io.qameta.allure.TmsLink;
+import io.qameta.allure.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -118,9 +114,8 @@ class GraphQLRemoveItemTest extends BaseGraphQlTest {
         Allure.parameter("Profile ID", SHOPPING_LIST_NAME);
 
         var removeItemRequest = TestDataGenerator.generateRemoveItemDTO(skuId, SHOPPING_LIST_NAME);
-        var responseAssertion = Allure.step(String.format("Removes sku: '%s' from the shopping list", skuId), () -> {
-            return graphQLShoppingList.removeItemFromShoppingList(removeItemRequest);
-        });
+        var responseAssertion = Allure.step(String.format("Removes sku: '%s' from the shopping list", skuId),
+                () -> graphQLShoppingList.removeItemFromShoppingList(removeItemRequest));
         Allure.step("Validates the error message is appeared", () -> {
             responseAssertion.validateErrorMessage(String.format("There is no such shoppingListItem: %s", skuId));
         });

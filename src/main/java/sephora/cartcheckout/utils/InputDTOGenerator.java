@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class InputDTOGenerator {
 
-    static CreateProductController createProductController = new CreateProductController();
+    public static CreateProductController createProductController = new CreateProductController();
 
     public static CreateProductInputDTO prepareCreateProductInputDTO(String slug, String sku, int centAmount) throws IOException {
         CreateProductInputDTO createProductInputDTO = new CreateProductInputDTO();

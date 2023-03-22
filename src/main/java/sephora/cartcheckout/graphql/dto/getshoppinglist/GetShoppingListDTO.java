@@ -1,11 +1,9 @@
 package sephora.cartcheckout.graphql.dto.getshoppinglist;
 
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class GetShoppingListDTO {
 
     String query;
