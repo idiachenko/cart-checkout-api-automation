@@ -5,75 +5,105 @@ import io.qameta.allure.Feature;
 import io.qameta.allure.Severity;
 import io.qameta.allure.Story;
 import io.qameta.allure.TmsLink;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import sephora.cartcheckout.graphql.controller.RemoveItemController;
-import sephora.cartcheckout.graphql.dto.removeitem.response.GetShoppingListResponse;
+import sephora.cartcheckout.graphql.controller.GraphQLShoppingListController;
 import sephora.cartcheckout.graphql.dto.removeitem.response.LineItemsItem;
 import sephora.cartcheckout.graphql.dto.removeitem.response.Product;
+import sephora.cartcheckout.graphql.dto.removeitem.response.RemoveItemMutationResponse;
+import sephora.cartcheckout.jupiter.annotation.GenerateProduct;
 import sephora.cartcheckout.jupiter.annotation.TestCaseId;
+import sephora.cartcheckout.product.dto.createproduct.response.CreateProductResponseDTO;
 import sephora.utility.TestDataGenerator;
+
+import java.io.IOException;
+import java.util.List;
 
 import static io.qameta.allure.SeverityLevel.BLOCKER;
 import static io.qameta.allure.SeverityLevel.NORMAL;
 import static java.util.stream.Collectors.toList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static sephora.cartcheckout.graphql.enums.Source.PRODUCT_PAGE;
 
 
+@Tag("graphql")
 @Feature("Shopping List")
 @DisplayName("Remove Item Suite")
 class GraphQLRemoveItemTest extends BaseGraphQlTest {
 
     private static final String SHOPPING_LIST_NAME = "denis";
-    private final RemoveItemController removeItemController = new RemoveItemController();
+    private final GraphQLShoppingListController graphQLShoppingList = new GraphQLShoppingListController();
 
     @Test
     @Story("Remove Item from Shopping List")
-    @Disabled
     @TmsLink("13633991")
     @Severity(BLOCKER)
+    @Tag("smoke")
     @TestCaseId("13633991")
     @DisplayName("Verify the Sku is removed from the shopping list successfully")
-    void verifySKURemovedFromShoppingListWithValidProfileIdAndSku() {
-        final String skuId = "P421275-1962141";
+    void verifySKURemovedFromShoppingListWithValidProfileIdAndSku(@GenerateProduct CreateProductResponseDTO product) throws IOException {
+        final var skuId = product.getMasterData().getCurrent().getMasterVariant().getSku();
         Allure.parameter("SKU ID", skuId);
         Allure.parameter("Profile ID", SHOPPING_LIST_NAME);
 
-        var removeItemRequest = TestDataGenerator.generateRemoveItemDTO(skuId, SHOPPING_LIST_NAME);
-        var collect = removeItemController.removeItemFromShoppingList(removeItemRequest)
-                .getTargetResponse()
-                .then()
-                .extract().as(GetShoppingListResponse.class)
-                .getData()
-                .getRemoveItem()
-                .getLineItems()
-                .stream()
-                .map(LineItemsItem::getProduct)
-                .map(Product::getSku)
-                .collect(toList());
-
-        Assertions.assertAll(
-                () -> assertEquals(1, collect.size()),
-                () -> assertNotEquals(skuId, collect.stream().findFirst().get().getId())
-        );
+        Allure.step("Add sku to shopping list", () -> {
+            var addRequest = TestDataGenerator.generateAddItemDTO(List.of(skuId), PRODUCT_PAGE);
+            graphQLShoppingList.addItemToShoppingList(addRequest);
+        });
+        var skuList = Allure.step(String.format("Removes sku: '%s' from the shopping list", skuId), () -> {
+            var removeItemRequest = TestDataGenerator.generateRemoveItemDTO(skuId, SHOPPING_LIST_NAME);
+            return graphQLShoppingList.removeItemFromShoppingList(removeItemRequest)
+                    .getTargetResponse()
+                    .then()
+                    .extract()
+                    .as(RemoveItemMutationResponse.class)
+                    .getData()
+                    .getRemoveItem()
+                    .getLineItems()
+                    .stream()
+                    .map(LineItemsItem::getProduct)
+                    .map(Product::getSku)
+                    .collect(toList());
+        });
+        Allure.step("Validate the sku has been removed", () -> {
+            assertFalse(skuList.stream().anyMatch(sku -> sku.getId().equals(skuId)));
+        });
     }
 
     @Test
     @Story("Remove Item from Shopping List")
-    @Disabled
     @Severity(NORMAL)
     @TmsLink("13633993")
     @TestCaseId("13633993")
     @DisplayName("Verify deleting the last item in the shopping list with valid values")
-    void verifyDeletingTheLastItemInTheShoppingListWithValidValues() {
+    void verifyDeletingTheLastItemInTheShoppingListWithValidValues(@GenerateProduct CreateProductResponseDTO product) {
+        final var skuId = product.getMasterData().getCurrent().getMasterVariant().getSku();
+        Allure.parameter("SKU ID", skuId);
         Allure.parameter("Profile ID", SHOPPING_LIST_NAME);
 
-
-        var removeItemRequest = TestDataGenerator.generateRemoveItemDTO("d", SHOPPING_LIST_NAME);
-        removeItemController.removeItemFromShoppingList(removeItemRequest);
+        Allure.step("Add sku to shopping list", () -> {
+            var addRequest = TestDataGenerator.generateAddItemDTO(List.of(skuId), PRODUCT_PAGE);
+            graphQLShoppingList.addItemToShoppingList(addRequest);
+        });
+        var skuList = Allure.step(String.format("Removes sku: '%s' from the shopping list", skuId), () -> {
+            var removeItemRequest = TestDataGenerator.generateRemoveItemDTO(skuId, SHOPPING_LIST_NAME);
+            return graphQLShoppingList.removeItemFromShoppingList(removeItemRequest)
+                    .getTargetResponse()
+                    .then()
+                    .extract()
+                    .as(RemoveItemMutationResponse.class)
+                    .getData()
+                    .getRemoveItem()
+                    .getLineItems()
+                    .stream()
+                    .map(LineItemsItem::getProduct)
+                    .map(Product::getSku)
+                    .collect(toList());
+        });
+        Allure.step("Validate the sku has been removed", () -> {
+            assertFalse(skuList.stream().anyMatch(sku -> sku.getId().equals(skuId)));
+        });
     }
 
     @Test
@@ -87,10 +117,13 @@ class GraphQLRemoveItemTest extends BaseGraphQlTest {
         Allure.parameter("SKU ID", skuId);
         Allure.parameter("Profile ID", SHOPPING_LIST_NAME);
 
-
         var removeItemRequest = TestDataGenerator.generateRemoveItemDTO(skuId, SHOPPING_LIST_NAME);
-        removeItemController.removeItemFromShoppingList(removeItemRequest)
-                .validateErrorMessage(String.format("There is no such shoppingListItem: %s", skuId));
+        var responseAssertion = Allure.step(String.format("Removes sku: '%s' from the shopping list", skuId), () -> {
+            return graphQLShoppingList.removeItemFromShoppingList(removeItemRequest);
+        });
+        Allure.step("Validates the error message is appeared", () -> {
+            responseAssertion.validateErrorMessage(String.format("There is no such shoppingListItem: %s", skuId));
+        });
     }
 
     @Test
@@ -103,11 +136,14 @@ class GraphQLRemoveItemTest extends BaseGraphQlTest {
         final String skuId = "P454207-2301365";
         Allure.parameter("SKU ID", skuId);
         Allure.parameter("Profile ID", SHOPPING_LIST_NAME);
-
-
         var removeItemRequest = TestDataGenerator.generateRemoveItemDTO(skuId, SHOPPING_LIST_NAME);
-        removeItemController.removeItemFromShoppingList(removeItemRequest)
-                .validateErrorMessage(String.format("There is no such shoppingListItem: %s", skuId));
+
+        var responseAssertion = Allure.step(String.format("Removes sku: '%s' from the shopping list", skuId), () -> {
+            return graphQLShoppingList.removeItemFromShoppingList(removeItemRequest);
+        });
+        Allure.step("Validates the error message is appeared", () -> {
+            responseAssertion.validateErrorMessage(String.format("There is no such shoppingListItem: %s", skuId));
+        });
     }
 
     @Test
@@ -121,10 +157,13 @@ class GraphQLRemoveItemTest extends BaseGraphQlTest {
         final String profileId = "63123dsadsad";
         Allure.parameter("SKU ID", skuId);
         Allure.parameter("Profile ID", profileId);
-
-
         var removeItemRequest = TestDataGenerator.generateRemoveItemDTO(skuId, profileId);
-        removeItemController.removeItemFromShoppingList(removeItemRequest)
-                .validateErrorMessage(String.format("Shopping list with id: [%s-shopping-list] was not found.", profileId));
+
+        var responseAssertion = Allure.step(String.format("Removes sku: '%s' from the shopping list", skuId), () -> {
+            return graphQLShoppingList.removeItemFromShoppingList(removeItemRequest);
+        });
+        Allure.step("Validates the error message is appeared", () -> {
+            responseAssertion.validateErrorMessage(String.format("Shopping list with id: [%s-shopping-list] was not found.", profileId));
+        });
     }
 }

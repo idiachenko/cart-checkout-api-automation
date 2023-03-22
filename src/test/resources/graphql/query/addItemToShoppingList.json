@@ -1,0 +1,4 @@
+{
+  "query":"mutation addItem($input: AddItemInput!) {\n  addItem(input: $input) {\n    id\n    key\n    version\n    customerProfile {\n      status\n      locale\n    }\n    lineItems {\n      id\n      addedAt\n      variant {\n        sku\n      }\n    }\n    notification {\n      context\n      messages\n      type\n    }\n  }\n}",
+  "operationName":"addItem"
+}

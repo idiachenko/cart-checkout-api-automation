@@ -24,4 +24,7 @@ public interface AppConfig extends Config {
     @DefaultValue("Bearer x7ZSVCOiBUBgxDZ2_SJ33ZEbY-T2CYM8")
     String getCtpAccessToken();
 
+    @Key("number_of_threads")
+    @DefaultValue("3")
+    int getNumberOfThreads();
 }
