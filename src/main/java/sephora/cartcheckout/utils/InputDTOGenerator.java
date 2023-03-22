@@ -17,7 +17,7 @@ public class InputDTOGenerator {
         createProductInputDTO = JsonUtils.getJsonAsObject(createProductInputDTO, "src/main/resources/productJson/createProductInput.json");
         createProductInputDTO.getSlug().setEn(slug);
         createProductInputDTO.getName().setEn("API test " + System.currentTimeMillis());
-        createProductInputDTO.getMasterVariant().setSku(slug + "-" + sku);
+        createProductInputDTO.getMasterVariant().setSku(String.format("%s-%s", slug, sku));
         createProductInputDTO.getMasterVariant().getPrices().get(0).getValue().setCentAmount(centAmount);
         createProductInputDTO.getMasterVariant().getPrices().get(0).getValue().setCurrencyCode("USD");
 

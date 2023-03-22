@@ -1,5 +1,6 @@
 package sephora.graphql;
 
+import com.github.javafaker.Faker;
 import sephora.cartcheckout.graphql.dto.getshoppinglist.GetShoppingListDTO;
 import sephora.cartcheckout.graphql.dto.getshoppinglist.Input;
 import sephora.cartcheckout.graphql.dto.getshoppinglist.Pagination;
@@ -8,10 +9,13 @@ import sephora.cartcheckout.graphql.enums.ShoppingListSortType;
 import sephora.cartcheckout.utils.JsonUtils;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class BaseGraphQlTest {
 
-    public Variables getShoppingListVariablesDTO(String key, ShoppingListSortType sortBy, String storeId, Integer currentPage, Integer itemsPerPage){
+    protected Faker faker = new Faker(Locale.US);
+
+    public Variables getShoppingListVariablesDTO(String key, ShoppingListSortType sortBy, String storeId, int currentPage, int itemsPerPage){
         return Variables.builder()
                 .input(Input.builder()
                         .key(key)
@@ -32,6 +36,4 @@ public class BaseGraphQlTest {
         return getShoppingListDTO;
 
     }
-    
-
 }

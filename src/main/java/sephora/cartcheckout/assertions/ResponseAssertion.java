@@ -60,4 +60,10 @@ public class ResponseAssertion {
                 .withFailMessage(expectedErrorMessage)
                 .contains(errorMessage);
     }
+
+    public ResponseAssertion validateErrorMessage(String expected) {
+        String actualMessage = targetResponse.jsonPath().get("errors[0].message");
+        Assertions.assertThat(actualMessage).isEqualTo(expected);
+        return this;
+    }
 }
